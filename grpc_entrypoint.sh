@@ -6,7 +6,7 @@ COMMAND=$@
 echo "Waiting for database to start..."
 maxTries=10
 
-while [ "$maxTries" -gt 0 ] && ! mysql -h "$MYSQl_HOST" -P "$MYSQl_PORT" -u "$MYSQl_USER" -p "$MYSQl_PASSWORD" -e "show databases;" > /dev/null 2>&1; do
+while [ "$maxTries" -gt 0 ] && ! mysql -h "$MYSQL_HOST" -P "$MYSQL_PORT" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DB" -e 'SHOW TABLES'; do
   maxTries=$((maxTries-1))
   sleep 3
 done
