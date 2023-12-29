@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db:
+    image: 'mysql/mysql-server:8.0'
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+    volumes:
+      - ./config/:/docker-entrypoint-initdb.d
+    ports:
+      - 3307:3306
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  
+  grpc:
+    build: .
+    ports:
+      - 9000:9000
+    depends_on:
+      - db
+    environment:
+      DB_DRIVER: mysql
+      DS_NAME: root:root@tcp(db:3306)/test
+      MYSQl_HOST: db
+      MYSQl_PORT: 3306
+      MYSQl_USER: root
+      MYSQl_PASSWORD: root
+      MYSQl_DATABASE: test
+    command: ["go", "test", "-v", "./..."]

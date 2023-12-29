@@ -39,7 +39,7 @@ func (dbA Adapter) CloseDBConnection() {
 }
 
 func (dbA Adapter) Create(answer int32, operation string) error {
-	queryString, args, err := sq.Insert("operations").Columns("date", "answer", "operation").Values(time.Now(), answer, operation).ToSql()
+	queryString, args, err := sq.Insert("arithmetics").Columns("created_at", "answer", "operation").Values(time.Now().Unix(), answer, operation).ToSql()
 
 	if err != nil {
 		return err
